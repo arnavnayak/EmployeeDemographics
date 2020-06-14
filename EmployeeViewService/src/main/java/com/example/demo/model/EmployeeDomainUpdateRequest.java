@@ -1,13 +1,14 @@
-package com.employeedomain.application.model;
-
+package com.example.demo.model;
 import lombok.Data;
 
 @Data
-public class EmployeeRequestUpdateModel {
+public class EmployeeDomainUpdateRequest {
 	private String address;
 	private String phone;
 	private float exp;
 	private String techStack; 
-	
+		
 
+	
+	
 }

@@ -67,16 +67,25 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	public EmployeeDto updateEmployee(EmployeeDto employeeDetails,int empId) {
-		EmployeePersonalDetails employeePersonalDetails=employeeRepository.findById(empId).get();
-		EmployeeProfessionalDetail details=employeePersonalDetails.getEmpDetails();
-		employeePersonalDetails.setEmpName(employeeDetails.getEmpName());
-		employeePersonalDetails.setAddress(employeeDetails.getAddress());
-		employeePersonalDetails.setPhone(employeeDetails.getPhone());
-		employeeRepository.save(employeePersonalDetails);
-    	EmployeeDto empReturnDto=(EmployeeDto)EmployeeUtil.modelMapping(employeePersonalDetails);
-    	empReturnDto.setProjectName(details.getProjectName());
-    	empReturnDto.setEmpRole(details.getEmpRole());
-        return empReturnDto;
+		  //fetching employees details present already in db
+		  EmployeePersonalDetails employeePersonalDetails=employeeRepository.findById(empId).get();
+		  EmployeePersonalDetails empEntity=(EmployeePersonalDetails)EmployeeUtil.modelMapping(employeeDetails);
+		 //the value of particular person like name and email amd Id which cannot be changed are stored as is
+		  empEntity.setEmpId(employeePersonalDetails.getEmpId());
+		  empEntity.setEmpName(employeePersonalDetails.getEmpName());
+		 // the value which can be changed are as follows 
+		  empEntity.setAddress(employeeDetails.getAddress());
+		  empEntity.setPhone(employeeDetails.getPhone());
+		  empEntity.setEmail(employeePersonalDetails.getEmail());
+		 // professional details which can change with the changed experience.
+		  String role=assignRole(employeeDetails);
+		  String projectAssigned=assignProject(employeeDetails);
+		  EmployeeProfessionalDetail empDetails=new EmployeeProfessionalDetail(role,employeeDetails.getExp(),projectAssigned);
+		  empEntity.setEmpDetails(empDetails);
+		  employeeRepository.save(empEntity); 
+		  EmployeeDto empReturnDto=(EmployeeDto)EmployeeUtil.modelMapping(empEntity);
+		  return empReturnDto;
+		 
 	}
 	
 	// Method to get all employee details

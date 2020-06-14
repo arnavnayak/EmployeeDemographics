@@ -57,15 +57,16 @@ public class EmployeeDomainController {
 	}
 	
 	@PutMapping("/updateEmployee/{empId}")
-	public ResponseEntity<EmployeeResponseModel> updateEmployee( @RequestBody EmployeeRequestUpdateModel employeeDetails,BindingResult binder,@PathVariable("empId")int empId) {
-		EmployeeDto employeeDto=(EmployeeDto) EmployeeUtil.modelMapping(employeeDetails);
+	public ResponseEntity<EmployeeResponseModel> updateEmployee( @RequestBody EmployeeRequestUpdateModel employeeUpdatedDetails,BindingResult binder,@PathVariable("empId")int empId) {
+		
+		EmployeeDto employeeDto=(EmployeeDto) EmployeeUtil.modelMapping(employeeUpdatedDetails);
 		EmployeeDto returnEmpDetails=employeeService.updateEmployee(employeeDto,empId);
 		EmployeeResponseModel returnResult=EmployeeUtil.modelMappingResponse(returnEmpDetails);
 		return ResponseEntity.status(HttpStatus.OK).body(returnResult) ;
 	}
 	
-	@GetMapping("/getEmployee")
-	public ResponseEntity<EmployeeResponseModel>  getEmployee(@RequestParam("empId") int empId) {
+	@GetMapping("/getEmployee/{empId}")
+	public ResponseEntity<EmployeeResponseModel>  getEmployee(@PathVariable("empId")int empId) {
 		EmployeeDto returnEmpDetails=employeeService.getEmployee(empId);
 		EmployeeResponseModel returnResult=EmployeeUtil.modelMappingResponse(returnEmpDetails);
 		return ResponseEntity.status(HttpStatus.OK).body(returnResult) ;
