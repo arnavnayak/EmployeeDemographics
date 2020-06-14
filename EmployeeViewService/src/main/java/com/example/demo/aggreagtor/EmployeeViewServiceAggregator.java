@@ -3,6 +3,7 @@ package com.example.demo.aggreagtor;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,9 @@ public class EmployeeViewServiceAggregator {
 	
 	@Autowired
 	LoadBalancerClient ribbonLoadBalancerClient;
-	@Value("$domainService.createEmployee.name")
+	@Value("${domainService.createEmployee.name}")
 	String domainServiceName;
-	@Value("$domainService.createEmployee.url")
+	@Value("${domainService.createEmployee.url}")
 	String domainServiceEndpoint;
 	
 	public ResponseEntity<String> setEmployeeDetails(EmployeeViewRequest employeeViewrequest){
@@ -46,10 +47,10 @@ public class EmployeeViewServiceAggregator {
 		employeeDomainRequest.setEmpName(employeeViewrequest.getEmpFirstName()+" "+employeeViewrequest.getEmpLastName());
 		employeeDomainRequest.setAddress(employeeViewrequest.getAddress());
 		employeeDomainRequest.setPhone(employeeViewrequest.getPhone());
-		//TODO need to compare with fetching from database the email should not be duplicated
-		employeeDomainRequest.setEmail(employeeViewrequest.getEmpFirstName()+"."+employeeViewrequest.getEmpLastName().concat("@xyz.com"));
+		employeeDomainRequest.setEmail(employeeViewrequest.getEmpFirstName().toLowerCase()+"."+employeeViewrequest.getEmpLastName().toLowerCase().concat("@xyz.com"));
 		String doj=employeeViewrequest.getDateOfJoining();
 		float experience = totalExperience(doj);
+		employeeDomainRequest.setTechStack(employeeViewrequest.getTechStack());
 		employeeDomainRequest.setExp(experience);
 		return employeeDomainRequest;
 	
@@ -57,11 +58,10 @@ public class EmployeeViewServiceAggregator {
 
 	private float totalExperience(String doj) {
 		LocalDate today = LocalDate.now();
-		LocalDate d1 = LocalDate.parse(doj, DateTimeFormatter.ISO_LOCAL_DATE);
+		LocalDate d1 = LocalDate.parse(doj, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 		LocalDate d2 = LocalDate.parse(today.toString(), DateTimeFormatter.ISO_LOCAL_DATE);
-		Duration diff = Duration.between(d1.atStartOfDay(), d2.atStartOfDay());
-		long diffDays = diff.toDays();
-		float experience = diffDays/360;
+		long  diff = ChronoUnit.DAYS.between(d1.atStartOfDay(), d2.atStartOfDay());
+		float experience = (diff/360);
 		return experience;
 	}
 

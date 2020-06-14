@@ -19,7 +19,7 @@ public class EmployeeProfessionalDetail implements Serializable{
 	
 public EmployeeProfessionalDetail() {}
 
-	public EmployeeProfessionalDetail(String empRole, String exp, String projectName) {
+	public EmployeeProfessionalDetail(String empRole, float exp, String projectName) {
 		this.empRole = empRole;
 		this.exp = exp;
 		this.projectName = projectName;
@@ -27,12 +27,12 @@ public EmployeeProfessionalDetail() {}
 	private static final long serialVersionUID = -7731498637669754269L;
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="empid")
+	@Column(name="employee_id")
 	private int id;
 	@Column(name="role")
 	private String empRole;
 	@Column(name="exp")
-	private String exp;
+	private float exp;
 	@Column(name="projectname")
 	private String projectName;
 

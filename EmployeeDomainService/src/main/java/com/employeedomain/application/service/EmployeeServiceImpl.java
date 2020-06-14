@@ -27,7 +27,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	
 
 	private String assignRole(EmployeeDto employeeDetails){
-		Integer experience=Integer.parseInt(employeeDetails.getExp());
+		float experience=employeeDetails.getExp();
 		if(experience<1)
 			return "Trainee";
 		else if(experience>=1 && experience<4)
@@ -41,11 +41,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 	
 	private String assignProject(EmployeeDto employeeDetails) {
-		if(Integer.parseInt(employeeDetails.getExp())>=5)
+		if(employeeDetails.getExp()>=5)
 			return EmployeeConstants.PROJECTS[0];
-		else if(Integer.parseInt(employeeDetails.getExp())<5 && (Integer.parseInt(employeeDetails.getExp())>=3))
+		else if(employeeDetails.getExp()<5 && employeeDetails.getExp()>=3)
 			return EmployeeConstants.PROJECTS[1];
-		else if(Integer.parseInt(employeeDetails.getExp())<3 && (Integer.parseInt(employeeDetails.getExp())>=2))
+		else if(employeeDetails.getExp()<3 && employeeDetails.getExp()>=2)
 		 	return EmployeeConstants.PROJECTS[2];
 		else 
 			return EmployeeConstants.PROJECTS[3];
@@ -69,7 +69,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public EmployeeDto updateEmployee(EmployeeDto employeeDetails,int empId) {
 		EmployeePersonalDetails employeePersonalDetails=employeeRepository.findById(empId).get();
 		EmployeeProfessionalDetail details=employeePersonalDetails.getEmpDetails();
-		employeePersonalDetails.setEmpployeeName(employeeDetails.getEmpName());
+		employeePersonalDetails.setEmpName(employeeDetails.getEmpName());
 		employeePersonalDetails.setAddress(employeeDetails.getAddress());
 		employeePersonalDetails.setPhone(employeeDetails.getPhone());
 		employeeRepository.save(employeePersonalDetails);

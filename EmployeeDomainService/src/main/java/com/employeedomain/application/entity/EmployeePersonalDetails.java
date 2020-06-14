@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -27,7 +28,7 @@ public class EmployeePersonalDetails implements Serializable {
 	@Column(name="empid")
 	private int empId;
 	@Column(name="employeename")
-	private String empployeeName;
+	private String empName;
 	@Column(name="address")
 	private String address;
 	@Column(name="phone")
@@ -35,7 +36,7 @@ public class EmployeePersonalDetails implements Serializable {
 	@Column(name="email")
 	private String email;
 	@OneToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name = "employeeprofessiondetail")
+	@JoinColumn(name = "employeeId")
 	private EmployeeProfessionalDetail empDetails;
 	
 
