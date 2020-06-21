@@ -3,6 +3,7 @@ package com.employeedomain.application.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -80,7 +81,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 		 // professional details which can change with the changed experience.
 		  String role=assignRole(employeeDetails);
 		  String projectAssigned=assignProject(employeeDetails);
-		  EmployeeProfessionalDetail empDetails=new EmployeeProfessionalDetail(role,employeeDetails.getExp(),projectAssigned);
+		  int id=empEntity.getEmpId();
+		  EmployeeProfessionalDetail empDetails=new EmployeeProfessionalDetail(id,role,employeeDetails.getExp(),projectAssigned);
 		  empEntity.setEmpDetails(empDetails);
 		  employeeRepository.save(empEntity); 
 		  EmployeeDto empReturnDto=(EmployeeDto)EmployeeUtil.modelMapping(empEntity);
@@ -112,13 +114,18 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	public EmployeeDto saveEmployee(EmployeeDto employeeDetails) {
+		AtomicInteger seq = new AtomicInteger();
+		int nextVal = seq.incrementAndGet();
+		employeeDetails.setEmpId(nextVal);
 		EmployeePersonalDetails empEntity=(EmployeePersonalDetails)EmployeeUtil.modelMapping(employeeDetails);
 		EmployeeDto empReturnDto=(EmployeeDto)EmployeeUtil.modelMapping(empEntity);
-        String projectAssigned=assignProject(employeeDetails);
+		empReturnDto.setEmpId(nextVal);
+		String projectAssigned=assignProject(employeeDetails);
         empReturnDto.setProjectName(projectAssigned);
         String role=assignRole(employeeDetails);
         empReturnDto.setEmpRole(role);
-        EmployeeProfessionalDetail empDetails=new EmployeeProfessionalDetail(role,employeeDetails.getExp(),projectAssigned);
+        int id=empReturnDto.getEmpId();
+		EmployeeProfessionalDetail empDetails=new EmployeeProfessionalDetail(id,role,employeeDetails.getExp(),projectAssigned);
         empEntity.setEmpDetails(empDetails);
         employeeRepository.save(empEntity);
         

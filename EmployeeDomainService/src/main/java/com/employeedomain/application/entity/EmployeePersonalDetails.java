@@ -24,7 +24,7 @@ public class EmployeePersonalDetails implements Serializable {
 	private static final long serialVersionUID = 4662580024017990646L;
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	//@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="empid")
 	private int empId;
 	@Column(name="employeename")
