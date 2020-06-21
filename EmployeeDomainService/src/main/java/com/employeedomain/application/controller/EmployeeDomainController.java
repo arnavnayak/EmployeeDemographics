@@ -1,5 +1,6 @@
 package com.employeedomain.application.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -40,7 +41,9 @@ public class EmployeeDomainController {
 		
 		//Validaion for email
 		List<EmployeeDto> returnEmpDetailList=employeeService.findAllEmployee();
+	List<Integer> employeeIds=new ArrayList<>();
 		for(EmployeeDto employee:returnEmpDetailList) {
+			employeeIds.add(employee.getEmpId());
 			if(employee.getEmail().equals(employeeDetails.getEmail())) {
 				//ResponseEntity<EmployeeResponseModel> body=new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
 				EmployeeResponseModel body=new EmployeeResponseModel();
@@ -50,7 +53,7 @@ public class EmployeeDomainController {
 		}
 		//Storing temporarily 
 		EmployeeDto employeeDto=(EmployeeDto) EmployeeUtil.modelMapping(employeeDetails);
-		EmployeeDto returnEmpDetails=employeeService.saveEmployee(employeeDto);
+		EmployeeDto returnEmpDetails=employeeService.saveEmployee(employeeDto,employeeIds);
 		
 		EmployeeResponseModel returnResult=EmployeeUtil.modelMappingResponse(returnEmpDetails);
 		return ResponseEntity.status(HttpStatus.CREATED).body(returnResult) ;

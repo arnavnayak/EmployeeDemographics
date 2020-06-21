@@ -113,9 +113,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public EmployeeDto saveEmployee(EmployeeDto employeeDetails) {
-		AtomicInteger seq = new AtomicInteger();
-		int nextVal = seq.incrementAndGet();
+	public EmployeeDto saveEmployee(EmployeeDto employeeDetails,List<Integer> employeeIds) {
+		int nextVal = 0;
+		for(Integer id:employeeIds) {
+			if(id.equals(nextVal)) {
+				AtomicInteger seq = new AtomicInteger();
+				nextVal = seq.incrementAndGet();
+			}
+		}
 		employeeDetails.setEmpId(nextVal);
 		EmployeePersonalDetails empEntity=(EmployeePersonalDetails)EmployeeUtil.modelMapping(employeeDetails);
 		EmployeeDto empReturnDto=(EmployeeDto)EmployeeUtil.modelMapping(empEntity);
