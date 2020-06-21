@@ -33,7 +33,7 @@ public class EmployeeViewController {
 		
 	}
 	@PutMapping(value="/update",produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> updateEmployeeDetailsRequest(@Valid EmployeeViewUpdateRequest employeeViewUpdateRequest,BindingResult binding){
+	public ResponseEntity<String> updateEmployeeDetailsRequest(@Valid @RequestBody EmployeeViewUpdateRequest employeeViewUpdateRequest,BindingResult binding){
 		ResponseEntity<String> response=employeeViewServiceAggregator.updateEmployeeDetails(employeeViewUpdateRequest);
 		return response;
 	}

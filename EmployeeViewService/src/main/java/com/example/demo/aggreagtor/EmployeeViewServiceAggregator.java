@@ -87,7 +87,7 @@ public class EmployeeViewServiceAggregator {
 	public ResponseEntity<String> updateEmployeeDetails(EmployeeViewUpdateRequest employeeViewUpdateRequest) {
 		EmployeeDomainUpdateRequest employeeDomainRequest = creatingUpdateServiceRequest(employeeViewUpdateRequest);
 		String domainServiceUrl=createDomainServiceUrl(domainServiceName,domainUpdateServiceEndpoint);
-		String finalDomainServiceUrl=domainServiceUrl+"{"+employeeViewUpdateRequest.getEmpId()+"}";
+		String finalDomainServiceUrl=domainServiceUrl+employeeViewUpdateRequest.getEmpId();
 		HttpEntity<EmployeeDomainUpdateRequest> entity=new HttpEntity<>(employeeDomainRequest); 
 		
 		return employeeViewService.doEmployeeUpdateServiceCall(finalDomainServiceUrl,HttpMethod.PUT,entity,String.class);

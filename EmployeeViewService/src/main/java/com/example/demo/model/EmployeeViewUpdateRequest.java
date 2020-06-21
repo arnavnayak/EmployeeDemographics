@@ -14,7 +14,6 @@ public class EmployeeViewUpdateRequest {
 	private String empLastName;
 	private String address;
 	private String phone;
-	@NotBlank(message="exp required for updating")
 	private float exp;
 	private String techStack;
 
