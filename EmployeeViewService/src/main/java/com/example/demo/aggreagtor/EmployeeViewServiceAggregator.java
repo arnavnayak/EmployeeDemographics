@@ -105,7 +105,7 @@ public class EmployeeViewServiceAggregator {
 
 	public ResponseEntity<String> fetchEmployeeDetails(int empId) {
 		String domainServiceUrl=createDomainServiceUrl(domainServiceName,domainViewServiceEndpoint);
-		String finalDomainServiceUrl=domainServiceUrl+"{"+empId+"}";
+		String finalDomainServiceUrl=domainServiceUrl+empId;
 		HttpHeaders headers = new HttpHeaders();
 		HttpEntity<?> entity = new HttpEntity<>(headers);
 		return employeeViewService.doEmployeeFetchEmployeeServiceCall(finalDomainServiceUrl,HttpMethod.GET,entity,String.class);
