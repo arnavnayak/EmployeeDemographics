@@ -19,7 +19,7 @@ import com.employeedomain.application.util.EmployeeUtil;
 public class EmployeeServiceImpl implements EmployeeService {
     private EmployeeRepository employeeRepository;
     private  List<EmployeeDto> emplList=new ArrayList<>();
-	
+    int nextVal = 0;
 	   
 	@Autowired
 	public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
@@ -114,11 +114,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	public EmployeeDto saveEmployee(EmployeeDto employeeDetails,List<Integer> employeeIds) {
-		int nextVal = 0;
+		
 		for(Integer id:employeeIds) {
 			if(id.equals(nextVal)) {
-				AtomicInteger seq = new AtomicInteger();
-				nextVal = seq.incrementAndGet();
+				//AtomicInteger seq = new AtomicInteger();
+				nextVal = nextVal + 1;
 			}
 		}
 		employeeDetails.setEmpId(nextVal);
